@@ -8,8 +8,8 @@ implicit none
 contains
 
 function ran2 (idum)
-	integer (idum, im1, im2, imm1, ia1, ia2, iq1, iq2, ir1, ir2, ntab, 
-		ndiv)
+	integer idum, im1, im2, imm1, ia1, ia2, iq1, iq2, ir1, ir2, ntab, &
+		ndiv
 	real ran2, am, eps, rnmx
 	parameter (im1=2147483563, im2=2147483399, am=1./im1, imm1=im1-1, & 
 		ia1=40014, ia2=40692, iq1=53668, iq2=52774, ir1=12211, &
