@@ -54,7 +54,7 @@ subroutine qtrap (func, a, b, s)
 integer jmax
 real a, b, func, s, eps
 external func
-parameter (eps=1.0e-6, jmax=20)
+parameter (eps=1.0e-12, jmax=20)
 ! uses trapzd
 
 ! Returns as s the integral of the function func from a to b. The
@@ -82,7 +82,7 @@ subroutine qsimp (func, a, b, s)
 integer jmax
 real a, b, func, s, eps
 external func
-parameter (eps=1.0e-6, jmax=20)
+parameter (eps=1.0e-12, jmax=20)
 !uses trapzd
 
 ! Returns as s the integral of the function func from a to b. The
@@ -116,7 +116,7 @@ subroutine qromb (func, a, b, ss)
 integer jmax, jmaxp, k, km
 real a, b, func, ss, eps
 external func
-parameter (eps=1.0e-6, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
+parameter (eps=1.0e-12, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
 ! Uses polint, trapzd
 ! Returns as ss the integral of the function func from a to b.
 ! Integration is performed by Romberg's method of order 2k, where e.g.,
@@ -194,7 +194,7 @@ subroutine qromo (func, a, b, ss, choose)
 integer jmax, jmaxp, k, km
 real a, b, func, ss, eps
 external func, choose
-parameter (eps=1.e-6, jmax=14, jmaxp=jmax+1, k=5, km=k-1)
+parameter (eps=1.e-12, jmax=14, jmaxp=jmax+1, k=5, km=k-1)
 ! USES polint
 ! Romberg integration on an open interval. Returns as ss the integral of
 ! the function func from a to b, using any specified integrating
@@ -232,7 +232,7 @@ external funk
 ! except that the function is evaluated at evenly spaced points in 1/x
 ! rather than in x. This allows the upper limit bb to be as large and
 ! positive as the computer allows, or the lower limit aa to be as large
-! and negative, but not both. aa dn bb must have the same sign.
+! and negative, but not both. aa and bb must have the same sign.
 integer it, j
 real a, b, ddel, del, sum, tnm, func, x
 
