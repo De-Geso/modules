@@ -60,7 +60,7 @@ integer i, j, k
 do i = 1,n
 	b(i) = 0.
 	k = i-m1-1
-	do j = max(1,1-k), min(m1+m2+2,n-k)
+	do j = max(1,1-k), min(m1+m2+1,n-k)
 		b(i) = b(i) + a(i,j)*x(j+k)
 	end do
 end do

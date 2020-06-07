@@ -116,7 +116,7 @@ subroutine qromb (func, a, b, ss)
 integer jmax, jmaxp, k, km
 real a, b, func, ss, eps
 external func
-parameter (eps=1.0e-12, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
+parameter (eps=1.e-6, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
 ! Uses polint, trapzd
 ! Returns as ss the integral of the function func from a to b.
 ! Integration is performed by Romberg's method of order 2k, where e.g.,
@@ -194,7 +194,7 @@ subroutine qromo (func, a, b, ss, choose)
 integer jmax, jmaxp, k, km
 real a, b, func, ss, eps
 external func, choose
-parameter (eps=1.e-12, jmax=14, jmaxp=jmax+1, k=5, km=k-1)
+parameter (eps=1.e-15, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
 ! USES polint
 ! Romberg integration on an open interval. Returns as ss the integral of
 ! the function func from a to b, using any specified integrating
