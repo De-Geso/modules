@@ -9,7 +9,10 @@ use interpolation
 implicit none
 
 
+
 contains
+
+
 
 !=======================================================================
 ! ELEMENTARY ALGORITHMS
@@ -50,13 +53,13 @@ return
 end subroutine
 
 
+
 subroutine qtrap (func, a, b, s)
 integer jmax
 real a, b, func, s, eps
 external func
-parameter (eps=1.0e-12, jmax=20)
+parameter (eps=1.0e-14, jmax=20)
 ! uses trapzd
-
 ! Returns as s the integral of the function func from a to b. The
 ! parameters eps can be set to the desired fractional accuracy and jmax
 ! so that 2^(jmax-1) is the maximum allowed number of steps. Integration
@@ -78,13 +81,13 @@ stop 'too many steps in qtrap'
 end subroutine
 
 
+
 subroutine qsimp (func, a, b, s)
 integer jmax
 real a, b, func, s, eps
 external func
-parameter (eps=1.0e-12, jmax=20)
-!uses trapzd
-
+parameter (eps=1.0e-14, jmax=20)
+! uses trapzd
 ! Returns as s the integral of the function func from a to b. The
 ! parameters eps can be set to the desired fractional accuracy and jmax
 ! so that 2^(jmax-1) is the maximum allowed number of steps. Integration
@@ -108,6 +111,8 @@ end do
 stop 'too many steps in qsimp'
 end subroutine
 
+
+
 !=======================================================================
 ! ROMBERG INTEGRATION
 !=======================================================================
@@ -116,7 +121,7 @@ subroutine qromb (func, a, b, ss)
 integer jmax, jmaxp, k, km
 real a, b, func, ss, eps
 external func
-parameter (eps=1.e-6, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
+parameter (eps=1.e-14, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
 ! Uses polint, trapzd
 ! Returns as ss the integral of the function func from a to b.
 ! Integration is performed by Romberg's method of order 2k, where e.g.,
@@ -143,15 +148,19 @@ end do
 stop 'too many steps in qromb'
 end subroutine
 
+
+
 !=======================================================================
 ! IMPROPER INTEGRALS
 !=======================================================================
 ! Integrand goes to a finite limiting value at finite upper and lower
-!	limits, but cannot be evaluated right on one of those limits.
+! 	limits, but cannot be evaluated right on one of those limits.
 ! The upper limit is infinity, or the lower limit is -infinity.
 ! It has an integrable singularity at either limit (ex. x^-1/2 at x=0).
 ! It has an integrable singularity at a known place between the upper
-!	and lower limits.
+! 	and lower limits.
+
+
 
 subroutine midpnt (func, a, b, s, n)
 integer n
@@ -190,11 +199,13 @@ end if
 return
 end subroutine
 
+
+
 subroutine qromo (func, a, b, ss, choose)
 integer jmax, jmaxp, k, km
 real a, b, func, ss, eps
 external func, choose
-parameter (eps=1.e-15, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
+parameter (eps=1.e-12, jmax=20, jmaxp=jmax+1, k=5, km=k-1)
 ! USES polint
 ! Romberg integration on an open interval. Returns as ss the integral of
 ! the function func from a to b, using any specified integrating
@@ -222,6 +233,8 @@ end do
 
 stop 'too many steps in qromo'
 end subroutine
+
+
 
 subroutine midinf (funk, aa, bb, s, n)
 integer n
@@ -265,5 +278,44 @@ end if
 
 return
 end subroutine
+
+
+
+subroutine midexp(funk, aa, bb, s, n)
+integer n
+real aa, bb, s, funk
+external funk
+! This routine is an exact replacement for midpnt, except that bb is
+! assumed to be infinite (value passed not actually used). It is assumed
+! that the function funk decreases exponentially rapidly at infinity.
+integer it, j
+real ddel, del, sum, tnm, x, func, a, b
+func(x) = funk(-log(x))/x
+b = exp(-aa)
+a = 0.
+if (n .eq. 1) then
+	s = (b-a)*func(0.5*(a+b))
+else
+	it = 3**(n-2)
+	tnm = it
+	del = (b-a)/(3.0*tnm)
+	ddel = del+del
+	! The added points alternate in spacing between del and ddel
+	x = a+0.5*del
+	sum = 0.0
+	do j = 1, it
+		sum = sum+func(x)
+		x = x+ddel
+		sum = sum+func(x)
+		x = x+del
+	end do
+	s = (s+(b-a)*sum/tnm)/3.0
+	! The new sum is combined with the old integral to give a refined
+	! integral
+end if
+
+return
+end subroutine
+
 
 end module

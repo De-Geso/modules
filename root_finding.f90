@@ -57,7 +57,7 @@ integer jmax
 real rtbis, x1, x2, xacc, func
 external func
 ! Maximum allowed number of bisections
-parameter (jmax=40)
+parameter (jmax=100)
 ! Using bisection, find the root of a function func known to lie between
 ! x1 and x2. The root, returned as rtbis, will be refined until accuracy
 ! is +- xacc.
